@@ -5,7 +5,10 @@ module.exports = {
     getAll(query){
    const knexQuery =  knex('products')
     if(query.title){
-        knexQuery.where('title',query.title)
+        knexQuery.where('title', 'like', `%${query.title}%`)
+    }
+    if(query.price){
+        knexQuery.where('price', '<', query.price)
     }
    
     return knexQuery

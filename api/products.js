@@ -3,9 +3,14 @@ const router = express.Router();
 const queries = require('../db/queries')
 
 router.get('/',(req,res)=>{
-    const {title} = req.query;
-    queries.getAll({title})
+    const {title,price} = req.query;
+    queries.getAll({title,price})
     .then((products)=>{ 
+        if(products.length == 0){
+            res.json({
+                'message': 'no item matched your parameters'
+            }) 
+        }
         res.json(products)
     }).catch((err)=>{
         res.json({error: err})
