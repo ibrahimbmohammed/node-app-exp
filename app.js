@@ -1,35 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/products');
+const app = express();
+const products = require('./api/products')
 
-var app = express();
-//DATABASE_URL
-
-//postgres://ahwmjspkxuhcjy:671505558274c9b405b9664f244990cd1e283b8013727bdcb88621a6cafecc1e@ec2-34-248-165-3.eu-west-1.compute.amazonaws.com:5432/d1ursnvoqhf7q8
-
-// const { Client } = require('pg');
-
-// const client = new Client({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-
-// client.connect();
-
-// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//   if (err) throw err;
-//   for (let row of res.rows) {
-//     console.log(JSON.stringify(row));
-//   }
-//   client.end();
-// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +22,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+
+/////where to keep all your api route//
+app.use('/api/v1/products',products)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,5 +42,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
